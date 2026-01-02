@@ -5,28 +5,28 @@ export const AUTHOR_HANDLE = "@jaideepmmhaan";
 
 export const THEMES: Record<Theme, ThemeColors> = {
   dark: {
-    bg: "bg-neutral-950",
-    surface: "bg-neutral-900",
-    text: "text-neutral-200",
+    bg: "bg-black",
+    surface: "bg-[#141414]", // Slightly lighter black for cards
+    text: "text-white",
     textMuted: "text-neutral-500",
     accent: "text-cyan-400",
-    border: "border-neutral-800",
+    border: "border-white/10",
   },
   pink: {
-    bg: "bg-[#2e0b16]", // Slightly richer deep pink
-    surface: "bg-[#4a1220]",
+    bg: "bg-[#180509]", // Very dark pink-black
+    surface: "bg-[#2e0b16]",
     text: "text-pink-100",
     textMuted: "text-pink-300/50",
-    accent: "text-pink-500", // Hot Pink
-    border: "border-pink-900/30",
+    accent: "text-pink-500",
+    border: "border-pink-500/20",
   },
   royal: {
-    bg: "bg-[#020617]", // Darker Navy
-    surface: "bg-[#0f172a]",
+    bg: "bg-[#020410]", // Deepest navy
+    surface: "bg-[#0a0f2c]",
     text: "text-blue-50",
     textMuted: "text-blue-300/50",
-    accent: "text-amber-400", // Gold for Royale
-    border: "border-blue-900/30",
+    accent: "text-amber-400",
+    border: "border-blue-500/20",
   },
 };
 

@@ -30,11 +30,13 @@ const App: React.FC = () => {
   // 1. Initialize Android Specifics
   useEffect(() => {
     if (Capacitor.isNativePlatform()) {
-      // Status Bar Styling
+      // Status Bar Styling - Critical for OLED look
       const configureStatusBar = async () => {
         try {
           await StatusBar.setOverlaysWebView({ overlay: true });
           await StatusBar.setStyle({ style: Style.Dark });
+          // Force transparent background for Android to remove default gray shade
+          await StatusBar.setBackgroundColor({ color: '#00000000' }); 
         } catch (e) {
           console.warn("StatusBar plugin error", e);
         }

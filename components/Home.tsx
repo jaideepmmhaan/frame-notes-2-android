@@ -47,67 +47,78 @@ const Home: React.FC<HomeProps> = ({
 
   return (
     <div className={`min-h-screen ${themeColors.bg} transition-colors duration-700 pb-20`}>
-      {/* Header */}
-      <header className="px-6 pt-12 pb-6 flex items-center justify-between sticky top-0 z-20 bg-gradient-to-b from-black/90 to-transparent backdrop-blur-sm">
-        <div className="flex flex-col">
-          <div className="flex flex-col items-start gap-3 mb-2">
-             <span className={`text-[10px] font-bold uppercase tracking-[0.25em] opacity-60 ${themeColors.text}`}>
-               {AUTHOR_HANDLE}
-             </span>
-             {/* Theme Switcher Dots */}
-             <div className="flex gap-3">
+      {/* Header - Android Safe Area Aware */}
+      <header className="px-6 pt-[calc(3rem+env(safe-area-inset-top))] pb-4 flex flex-col gap-4 sticky top-0 z-20 bg-gradient-to-b from-black via-black/95 to-transparent backdrop-blur-sm">
+        
+        <div className="flex items-center justify-between">
+            <div className="flex flex-col">
+              <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-neutral-500 mb-1">
+                {AUTHOR_HANDLE}
+              </span>
+              <h1 className="text-[2.5rem] font-bold tracking-tighter text-white leading-none">
+                  {showHidden ? 'HIDDEN' : 'FRAMES'}
+              </h1>
+            </div>
+
+            {/* Top Right Controls */}
+            <div className="flex items-center gap-4">
+                 <button 
+                    onClick={() => setShowHidden(!showHidden)}
+                    className="p-2 text-neutral-500 hover:text-white transition-colors"
+                >
+                    {showHidden ? <EyeOff size={22} /> : <Eye size={22} />}
+                </button>
+            </div>
+        </div>
+        
+        {/* Search Bar & Actions Row */}
+        <div className="flex items-center gap-3">
+            <div className="relative flex-grow overflow-hidden rounded-xl bg-[#141414] border border-white/5 flex items-center px-3 py-3 focus-within:bg-[#1A1A1A] transition-colors group">
+               <Search size={16} className="text-neutral-600 group-focus-within:text-white transition-colors mr-3" />
+               <input 
+                 type="text" 
+                 value={searchQuery}
+                 onChange={(e) => setSearchQuery(e.target.value)}
+                 placeholder="Search memory..." 
+                 className="bg-transparent outline-none w-full text-sm text-white placeholder-neutral-700 font-medium"
+               />
+            </div>
+            
+            {/* Theme Toggles */}
+            <div className="flex gap-2 px-2">
                 {[
-                  { id: 'dark', color: 'bg-neutral-800', border: 'border-neutral-600' },
+                  { id: 'dark', color: 'bg-[#141414]', border: 'border-neutral-700' },
                   { id: 'pink', color: 'bg-[#e11d48]', border: 'border-pink-900' },
                   { id: 'royal', color: 'bg-[#1e40af]', border: 'border-blue-900' }
                 ].map((t) => (
                   <button 
                     key={t.id}
                     onClick={() => onSetTheme(t.id as Theme)} 
-                    className={`w-4 h-4 rounded-full ${t.color} border ${t.border} transition-transform duration-300 ${currentTheme === t.id ? 'scale-125 ring-1 ring-white' : 'scale-100 opacity-60'}`} 
+                    className={`w-4 h-4 rounded-full ${t.color} border ${t.border} transition-transform duration-300 ${currentTheme === t.id ? 'scale-125 ring-2 ring-white border-transparent' : 'scale-100 opacity-50'}`} 
                   />
                 ))}
-             </div>
-          </div>
-          <div className="flex items-center gap-3">
-            <h1 className={`text-3xl font-black tracking-tighter ${themeColors.text}`}>
-              {showHidden ? 'HIDDEN' : 'FRAMES'}
-            </h1>
-            <button 
-                onClick={() => setShowHidden(!showHidden)}
-                className={`p-2 rounded-full active:bg-white/10 opacity-40 hover:opacity-100 transition-all ${themeColors.text}`}
-            >
-                {showHidden ? <EyeOff size={18} /> : <Eye size={18} />}
-            </button>
-          </div>
+            </div>
         </div>
-        
+      </header>
+
+      {/* Grid Layout */}
+      <div className="px-4 pt-4 grid grid-cols-2 gap-3 auto-rows-max">
+        {/* Create Card (Always first) */}
         {!showHidden && (
             <button 
               onClick={onCreateNote}
-              className={`w-14 h-14 rounded-full border ${themeColors.border} ${themeColors.surface} flex items-center justify-center active:scale-90 transition-transform shadow-[0_0_20px_rgba(0,0,0,0.5)] z-30`}
+              className="group relative w-full aspect-[3/4] rounded-lg border border-white/10 bg-[#0A0A0A] flex flex-col items-center justify-center gap-3 hover:bg-[#111] active:scale-95 transition-all overflow-hidden"
             >
-              <Plus size={28} className={themeColors.text} />
+               <div className="w-12 h-12 rounded-full border border-white/20 flex items-center justify-center group-hover:border-cyan-400/50 transition-colors">
+                  <Plus size={24} className="text-white group-hover:text-cyan-400 transition-colors" />
+               </div>
+               <span className="text-[10px] uppercase tracking-widest text-neutral-500 font-bold group-hover:text-white transition-colors">New Frame</span>
+               
+               {/* Subtle gradient effect on hover */}
+               <div className="absolute inset-0 bg-gradient-to-tr from-cyan-500/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
             </button>
         )}
-      </header>
 
-      {/* Search */}
-      <div className="px-6 mb-8">
-        <div className={`relative w-full overflow-hidden rounded-2xl bg-white/5 border border-white/5 flex items-center px-4 py-3.5 focus-within:bg-white/10 transition-colors`}>
-           <Search size={18} className="text-white/30 mr-3" />
-           <input 
-             type="text" 
-             value={searchQuery}
-             onChange={(e) => setSearchQuery(e.target.value)}
-             placeholder="Search memory..." 
-             className="bg-transparent outline-none w-full text-base text-white/90 placeholder-white/30 font-light"
-           />
-        </div>
-      </div>
-
-      {/* Masonry Grid */}
-      <div className="px-4 grid grid-cols-2 gap-4 auto-rows-max">
         {sortedNotes.map(note => (
             <NoteCard 
                 key={note.id} 
@@ -120,10 +131,9 @@ const Home: React.FC<HomeProps> = ({
             />
         ))}
 
-        {sortedNotes.length === 0 && (
-           <div className="col-span-full flex flex-col items-center justify-center py-32 opacity-20 pointer-events-none">
-             <div className="w-16 h-24 border-2 border-dashed border-white/50 rounded-lg mb-4"></div>
-             <p className="text-xs tracking-[0.2em] uppercase font-bold">Empty Vault</p>
+        {sortedNotes.length === 0 && !showHidden && (
+           <div className="col-span-full flex flex-col items-center justify-center py-20 opacity-30 pointer-events-none">
+             <p className="text-[10px] tracking-[0.2em] uppercase font-bold text-neutral-600">Your vault is empty</p>
            </div>
         )}
       </div>
@@ -143,38 +153,28 @@ interface NoteCardProps {
 const NoteCard: React.FC<NoteCardProps> = ({ note, onSelect, onToggleHide, onTogglePin, onDelete, themeColors }) => {
     const coverImage = getFirstImage(note.blocks);
     const previewText = getPreviewText(note.blocks);
-    const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
     const [isPressing, setIsPressing] = useState(false);
     const [showMenu, setShowMenu] = useState(false);
     const menuRef = useRef<HTMLDivElement>(null);
+    const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
-    // Close menu when clicking outside
     useEffect(() => {
         const handleClickOutside = (event: MouseEvent) => {
             if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
                 setShowMenu(false);
             }
         };
-
-        if (showMenu) {
-            document.addEventListener('mousedown', handleClickOutside);
-            document.addEventListener('touchstart', handleClickOutside);
-        }
-        return () => {
-            document.removeEventListener('mousedown', handleClickOutside);
-            document.removeEventListener('touchstart', handleClickOutside);
-        };
+        if (showMenu) document.addEventListener('mousedown', handleClickOutside);
+        return () => document.removeEventListener('mousedown', handleClickOutside);
     }, [showMenu]);
 
-    // Haptic Press Logic
     const startPress = useCallback(() => {
-        // Only start long press if menu is not open
         if (showMenu) return;
         setIsPressing(true);
         timerRef.current = setTimeout(() => {
             setIsPressing(false);
-            if (navigator.vibrate) navigator.vibrate([10, 50, 10]);
-            onTogglePin(note); // Long press to Pin
+            if (navigator.vibrate) navigator.vibrate(50);
+            onTogglePin(note);
         }, 500); 
     }, [note, onTogglePin, showMenu]);
 
@@ -188,9 +188,8 @@ const NoteCard: React.FC<NoteCardProps> = ({ note, onSelect, onToggleHide, onTog
 
     return (
         <div 
-          className="group relative flex flex-col touch-manipulation z-0"
+          className="group relative flex flex-col touch-manipulation"
           onTouchStart={(e) => { 
-            // Don't trigger long press if hitting the menu button
             if ((e.target as HTMLElement).closest('.card-menu-btn')) return;
             startPress(); 
           }}
@@ -208,9 +207,8 @@ const NoteCard: React.FC<NoteCardProps> = ({ note, onSelect, onToggleHide, onTog
              }
           }}
         >
-          <div className={`relative w-full aspect-[4/5] rounded-xl overflow-hidden ${themeColors.surface} shadow-2xl border ${themeColors.border} transition-all duration-300 ${isPressing ? 'scale-95 opacity-80' : 'active:scale-95'}`}>
+          <div className={`relative w-full aspect-[3/4] rounded-lg overflow-hidden bg-[#141414] shadow-md border border-white/5 transition-all duration-300 ${isPressing ? 'scale-95 opacity-80' : 'active:scale-95'}`}>
             
-            {/* Visual */}
             {coverImage ? (
               <div className="absolute inset-0">
                 {coverImage.startsWith('data:video') ? (
@@ -218,68 +216,62 @@ const NoteCard: React.FC<NoteCardProps> = ({ note, onSelect, onToggleHide, onTog
                 ) : (
                    <img src={coverImage} alt="Cover" className="w-full h-full object-cover" loading="lazy" />
                 )}
-                <div className="absolute inset-0 bg-gradient-to-b from-black/20 via-transparent to-black/90" />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-transparent to-black/10" />
               </div>
             ) : (
-              <div className="absolute inset-0 flex items-center justify-center bg-white/5 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-white/10 to-transparent">
-                <span className="text-white/10 text-5xl font-serif italic">Aa</span>
+              <div className="absolute inset-0 flex items-center justify-center bg-[#141414]">
+                 <p className="text-neutral-700 text-3xl font-serif italic opacity-30">Aa</p>
               </div>
             )}
             
-            {/* Context Menu Button */}
+            {/* Menu Button */}
             <div className="absolute top-2 right-2 z-20">
                  <button 
                     onClick={(e) => { e.stopPropagation(); setShowMenu(!showMenu); }}
-                    className="card-menu-btn p-2 rounded-full bg-black/10 backdrop-blur-md text-white/50 hover:bg-black/50 hover:text-white transition-all"
+                    className="card-menu-btn p-1.5 rounded-full bg-black/20 backdrop-blur-md text-white/50 hover:bg-black/60 hover:text-white transition-all"
                  >
-                    <MoreVertical size={16} />
+                    <MoreVertical size={14} />
                  </button>
 
                  {showMenu && (
                      <div 
                         ref={menuRef}
-                        className="absolute top-full right-0 mt-2 w-32 bg-neutral-900/95 backdrop-blur-xl border border-white/10 rounded-xl shadow-2xl overflow-hidden animate-in fade-in zoom-in-95 origin-top-right flex flex-col p-1 z-50"
+                        className="absolute top-full right-0 mt-2 w-28 bg-[#1A1A1A] border border-white/10 rounded-lg shadow-xl overflow-hidden animate-in fade-in zoom-in-95 origin-top-right flex flex-col p-1 z-50"
                      >
                          <button 
                             onClick={(e) => { e.stopPropagation(); onTogglePin(note); setShowMenu(false); }}
-                            className="card-menu-btn flex items-center gap-2 px-3 py-2 text-xs font-medium text-white hover:bg-white/10 rounded-lg transition-colors text-left"
+                            className="card-menu-btn flex items-center gap-2 px-2 py-2 text-[10px] uppercase tracking-wider font-bold text-neutral-300 hover:bg-white/10 rounded transition-colors"
                          >
-                            {note.isPinned ? <PinOff size={14} /> : <Pin size={14} />}
+                            {note.isPinned ? <PinOff size={12} /> : <Pin size={12} />}
                             {note.isPinned ? 'Unpin' : 'Pin'}
                          </button>
-                         <div className="h-px bg-white/5 my-1" />
+                         <div className="h-px bg-white/5 my-0.5" />
                          <button 
                             onClick={(e) => { e.stopPropagation(); onDelete(note.id); setShowMenu(false); }}
-                            className="card-menu-btn flex items-center gap-2 px-3 py-2 text-xs font-medium text-red-400 hover:bg-red-500/10 rounded-lg transition-colors text-left"
+                            className="card-menu-btn flex items-center gap-2 px-2 py-2 text-[10px] uppercase tracking-wider font-bold text-red-400 hover:bg-red-500/10 rounded transition-colors"
                          >
-                            <Trash2 size={14} />
+                            <Trash2 size={12} />
                             Delete
                          </button>
                      </div>
                  )}
             </div>
 
-            {/* Pin Badge (Now Top Left) */}
+            {/* Pin Indicator */}
             {note.isPinned && (
-                <div className={`absolute top-3 left-3 p-1.5 rounded-full backdrop-blur-md bg-white/10 border border-white/20 shadow-lg ${themeColors.accent} z-10`}>
-                    <Pin size={10} fill="currentColor" />
+                <div className="absolute top-3 left-3">
+                    <Pin size={12} className="text-cyan-400 drop-shadow-[0_0_8px_rgba(34,211,238,0.5)]" fill="currentColor" />
                 </div>
             )}
             
-            {/* Text Overlay */}
-            <div className="absolute bottom-0 left-0 right-0 p-4 pt-8 pointer-events-none">
-              <h3 className={`text-white font-semibold text-sm leading-tight line-clamp-2 mb-1 drop-shadow-md`}>
-                {note.title}
+            {/* Info Overlay */}
+            <div className="absolute bottom-0 left-0 right-0 p-3 pt-6 pointer-events-none">
+              <h3 className="text-white font-bold text-sm leading-tight line-clamp-2 mb-1 drop-shadow-lg">
+                {note.title || 'Untitled'}
               </h3>
-              <p className="text-[11px] text-white/70 line-clamp-1 font-medium opacity-80">
+              <p className="text-[10px] text-neutral-400 line-clamp-1 font-medium">
                 {previewText}
               </p>
-              <div className="flex items-center justify-between mt-3">
-                 <span className="text-[9px] text-white/40 uppercase tracking-wider font-bold">
-                    {formatDate(note.updatedAt)}
-                 </span>
-                 {note.isHidden && <EyeOff size={10} className="text-white/50" />}
-              </div>
             </div>
           </div>
         </div>
