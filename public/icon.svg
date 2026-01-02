@@ -1,0 +1,29 @@
+<svg width="1024" height="1024" viewBox="0 0 1024 1024" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Dark Background -->
+  <rect width="1024" height="1024" fill="#050505"/>
+  
+  <!-- Outer Glow (Subtle) -->
+  <rect x="212" y="180" width="600" height="664" rx="40" stroke="#22D3EE" stroke-width="20" stroke-opacity="0.1" filter="url(#filter0_f)"/>
+  
+  <!-- Main Frame Border -->
+  <rect x="212" y="180" width="600" height="664" rx="40" stroke="url(#paint0_linear)" stroke-width="32"/>
+  
+  <!-- Inner Detail (Camera/Lens hint) -->
+  <circle cx="512" cy="300" r="12" fill="#FFFFFF" fill-opacity="0.2"/>
+
+  <defs>
+    <!-- Cyan to Pink Gradient -->
+    <linearGradient id="paint0_linear" x1="212" y1="180" x2="812" y2="844" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#22D3EE"/>
+      <stop offset="0.5" stop-color="#FFFFFF"/>
+      <stop offset="1" stop-color="#E879F9"/>
+    </linearGradient>
+    
+    <!-- Blur Filter for Glow -->
+    <filter id="filter0_f" x="160" y="128" width="704" height="768" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+      <feFlood flood-opacity="0" result="BackgroundImageFix"/>
+      <feBlend mode="normal" in="SourceGraphic" in2="BackgroundImageFix" result="shape"/>
+      <feGaussianBlur stdDeviation="25" result="effect1_foregroundBlur"/>
+    </filter>
+  </defs>
+</svg>

@@ -1,0 +1,16 @@
+{
+  "appId": "com.jaideepmmhaan.framenotes",
+  "appName": "Frame Notes",
+  "webDir": "dist",
+  "server": {
+    "androidScheme": "https"
+  },
+  "plugins": {
+    "SplashScreen": {
+      "launchShowDuration": 0
+    },
+    "StatusBar": {
+      "overlaysWebView": true
+    }
+  }
+}
